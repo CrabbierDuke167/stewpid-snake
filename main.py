@@ -5,6 +5,7 @@ import textwrap
 
 # imports from ui_utils.py
 from ui_utils import clear, game_over_print
+import game
 
 # Global vars
 game_title = textwrap.dedent("""
@@ -20,7 +21,7 @@ RESET = "\033[0m"
 
 
 
-def RenderUI(state=0):
+def RenderUI(state=0, game_results=()):
     clear()
     width = 90
     # state: home
@@ -32,8 +33,10 @@ def RenderUI(state=0):
                 print(RED+line.center(width)+RESET)
             print('━' * width + "\n\n")
 
-            userInp = input("When ever you are Ready -> ")
+            userInp = input("When ever you are Ready -> ").lower().strip()
             game_over_print(score=(0, 0, 'Too Lazy To Input Anything . . . ')) if not userInp else None
+            sys.exit() if userInp.lower().strip() in 'nnonooqquitnah' else None
+            state = 2
             print('━' * width)
 
         except Exception as e:
@@ -45,7 +48,7 @@ def RenderUI(state=0):
         clear()
         try:
             print('━' * width)
-            game_over_print()
+            game_over_print(game_results)
             print('━' * width)
 
         except Exception as e:
@@ -55,7 +58,8 @@ def RenderUI(state=0):
     # state game(running)
     if state == 2:
         clear()
-        
+        game.main()
+
 
 
 
